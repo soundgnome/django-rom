@@ -29,13 +29,36 @@ class ExpenseTestCase(TestCase):
         expense = Expense.objects.get(pk=1)
         self.assertEqual(expense.amount, 1325.92)
         self.assertEqual(expense.date, date(2017,1,1))
-        self.assertEqual(expense.type, Expense.Type.PERSONAL)
+        self.assertEqual(expense.type, Expense.Type.PERSONAL_MONTHLY)
+        self.assertEqual(expense.month_span, 1)
 
         expense = Expense.objects.get(pk=2)
-        self.assertEqual(expense.type, Expense.Type.BUSINESS)
+        self.assertEqual(expense.type, Expense.Type.BUSINESS_MONTHLY)
+        self.assertEqual(expense.month_span, 1)
 
         expense = Expense.objects.get(pk=3)
         self.assertEqual(expense.type, Expense.Type.TAX_QUARTERLY)
+        self.assertEqual(expense.month_span, 3)
 
         expense = Expense.objects.get(pk=4)
         self.assertEqual(expense.type, Expense.Type.TAX_ANNUAL)
+        self.assertEqual(expense.month_span, 12)
+
+
+    def test_month_span(self):
+
+        expense = Expense.objects.get(pk=4)
+        self.assertEqual(expense.type, Expense.Type.TAX_ANNUAL)
+        self.assertEqual(expense.month_span, 12)
+
+        expense.type = Expense.Type.PERSONAL_MONTHLY
+        expense.save()
+        self.assertEqual(expense.month_span, 1)
+
+        expense.type = Expense.Type.TAX_QUARTERLY
+        expense.save()
+        self.assertEqual(expense.month_span, 3)
+
+        expense.type = Expense.Type.BUSINESS_MONTHLY
+        expense.save()
+        self.assertEqual(expense.month_span, 1)
