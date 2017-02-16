@@ -1,7 +1,24 @@
 from datetime import date
 from decimal import Decimal
 from django.test import TestCase
+from .calculator import get_monthly_totals
 from .models import Client, Expense, Invoice
+
+
+class CalculatorTestCase(TestCase):
+
+    fixtures = (
+        'invoices/fixtures/invoices_test.json',
+    )
+
+    def test_monthly_totals(self):
+
+        totals = get_monthly_totals(17,1)
+        self.assertEqual(totals['income'], Decimal('752.00'))
+        self.assertEqual(totals['invoiced'], Decimal('682.50'))
+        self.assertEqual(totals['expenses_before_tax'], Decimal('1525.92'))
+        self.assertEqual(totals['total_expenses'], Decimal('4525.92'))
+        self.assertEqual(totals['adjusted_expenses'], Decimal('2592.59'))
 
 
 class InvoiceTestCase(TestCase):

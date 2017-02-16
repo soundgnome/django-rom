@@ -31,6 +31,30 @@
   }
 },
 {
+  "model": "invoices.invoice",
+  "pk": 3,
+  "fields": {
+    "invoice_number": "117",
+    "amount": "252.00",
+    "client": 1,
+    "date_sent": "2016-11-21",
+    "date_received": "2016-01-11",
+    "payment_comment": "check 9842"
+  }
+},
+{
+  "model": "invoices.invoice",
+  "pk": 4,
+  "fields": {
+    "invoice_number": "348",
+    "amount": "182.50",
+    "client": 1,
+    "date_sent": "2017-01-29",
+    "date_received": null,
+    "payment_comment": ""
+  }
+},
+{
   "model": "invoices.expense",
   "pk": 1,
   "fields": {
@@ -64,7 +88,7 @@
   "model": "invoices.expense",
   "pk": 4,
   "fields": {
-    "date": "2017-01-15",
+    "date": "2016-12-15",
     "amount": "800.00",
     "type": 3,
     "month_span": 12
