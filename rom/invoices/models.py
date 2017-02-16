@@ -20,13 +20,13 @@ class Invoice(models.Model):
     client = models.ForeignKey(Client, on_delete=models.PROTECT)
     date_sent = models.DateField()
     date_received = models.DateField(blank=True, null=True)
-    payment_comment = models.CharField(max_length=255, default='')
+    payment_comment = models.CharField(max_length=255, blank=True, default='')
 
     def __str__(self):
         return 'Invoice %s' % self.invoice_number
 
     class Meta:
-        ordering = ('date_sent',)
+        ordering = ('date_sent','invoice_number')
 
 
 class Expense(models.Model):
@@ -47,3 +47,24 @@ class Expense(models.Model):
     amount = models.DecimalField(max_digits=8, decimal_places=2)
     type = EnumIntegerField(Type)
     month_span = models.IntegerField(default=1)
+
+
+    def save(self, *args, **kwargs):
+        self._set_month_span()
+        return super(Expense, self).save(*args, **kwargs)
+
+
+    def _set_month_span(self):
+        if self.type == self.Type.TAX_QUARTERLY:
+            self.month_span = 3
+        elif self.type == self.Type.TAX_ANNUAL:
+            self.month_span = 12
+        else:
+            self.month_span = 1
+
+
+    def __str__(self):
+        return '%.2f %s expense' % (self.amount, self.type.label)
+
+    class Meta:
+        ordering = ('date','type')
