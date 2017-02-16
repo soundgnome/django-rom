@@ -13,7 +13,7 @@ class CalculatorTestCase(TestCase):
 
     def test_monthly_totals(self):
 
-        totals = get_monthly_totals(17,1)
+        totals = get_monthly_totals(2017, 1)
         self.assertEqual(totals['income'], Decimal('752.00'))
         self.assertEqual(totals['invoiced'], Decimal('682.50'))
         self.assertEqual(totals['expenses_before_tax'], Decimal('1525.92'))
