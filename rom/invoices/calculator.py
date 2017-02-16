@@ -1,5 +1,6 @@
 from datetime import date
-from django.db.models import Sum
+from decimal import Decimal
+from django.db.models import Q, Sum
 from .models import Expense, Invoice
 
 
@@ -14,8 +15,44 @@ def get_monthly_totals(year, month):
 
     totals['income'] = _get_income_total(start, end)
     totals['invoiced'] = _get_invoiced_total(start, end)
+    totals['total_expenses'] = _get_raw_total(Expense.objects, start, end)
+    totals['expenses_before_tax'] = _get_raw_total(_get_filtered_expenses(tax=False), start, end)
+    totals['adjusted_expenses'] = _get_adjusted_total(Expense.objects, start, end)
 
     return totals
+
+
+def _get_adjusted_total(expenses, start, end):
+    total = 0
+
+    aggregate = expenses.filter(date__gte=start).filter(date__lt=end). \
+                filter(month_span=1).aggregate(Sum('amount'))
+    total += aggregate['amount__sum'] or 0
+
+    if start.month >= 3:
+        quarterly_start = date(start.year, start.month-2, 1)
+    else:
+        quarterly_start = date(start.year-1, start.month+10, 1)
+    aggregate = expenses.filter(date__gte=quarterly_start).filter(date__lt=end). \
+                filter(month_span=3).aggregate(Sum('amount'))
+    if aggregate['amount__sum']:
+        total += aggregate['amount__sum']/3
+
+    annual_start = date(end.year-1, end.month, 1)
+    aggregate = expenses.filter(date__gte=annual_start).filter(date__lt=end). \
+                filter(month_span=12).aggregate(Sum('amount'))
+    if aggregate['amount__sum']:
+        total += aggregate['amount__sum']/12
+
+    return total.quantize(Decimal('.01'))
+
+
+def _get_filtered_expenses(tax=False):
+    if tax:
+        expenses = Expense.objects.filter(Q(type=Expense.Type.TAX_QUARTERLY) | Q(type=Expense.Type.TAX_ANNUAL))
+    else:
+        expenses = Expense.objects.exclude(type=Expense.Type.TAX_QUARTERLY).exclude(type=Expense.Type.TAX_ANNUAL)
+    return expenses
 
 
 def _get_income_total(start, end):
@@ -29,4 +66,9 @@ def _get_invoiced_total(start, end):
     aggregate = Invoice.objects. \
                 filter(date_sent__gte=start).filter(date_sent__lt=end). \
                 aggregate(Sum('amount'))
+    return aggregate['amount__sum']
+
+
+def _get_raw_total(expenses, start, end):
+    aggregate = expenses.filter(date__gte=start).filter(date__lt=end).aggregate(Sum('amount'))
     return aggregate['amount__sum']
