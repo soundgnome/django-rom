@@ -1,22 +1,27 @@
 from datetime import date
+from decimal import Decimal
 from django.test import TestCase
 from .models import Client, Expense, Invoice
 
 
 class InvoiceTestCase(TestCase):
 
+    fixtures = (
+        'invoices/fixtures/invoices_test.json',
+    )
+
     def test_invoice_attributes(self):
 
-        invoice= Invoice.objects.get(invoice_number='123')
+        invoice = Invoice.objects.get(invoice_number='123')
         self.assertEqual(invoice.client.name, 'Roe Design')
         self.assertEqual(invoice.amount, 500)
         self.assertEqual(invoice.date_sent, date(2017,1,3))
         self.assertEqual(invoice.date_received, date(2017,1,19))
         self.assertEqual(invoice.payment_comment, 'check 9876')
 
-        invoice= Invoice.objects.get(invoice_number='345')
+        invoice = Invoice.objects.get(invoice_number='345')
         self.assertIsInstance(invoice.client, Client)
-        self.assertEqual(invoice.amount, 382.75)
+        self.assertEqual(invoice.amount, Decimal('382.75'))
         self.assertEqual(invoice.date_sent, date(2016,11,29))
         self.assertEqual(invoice.date_received, None)
         self.assertEqual(invoice.payment_comment, '')
@@ -24,10 +29,14 @@ class InvoiceTestCase(TestCase):
 
 class ExpenseTestCase(TestCase):
 
+    fixtures = (
+        'invoices/fixtures/invoices_test.json',
+    )
+
     def test_expense_attributes(self):
 
         expense = Expense.objects.get(pk=1)
-        self.assertEqual(expense.amount, 1325.92)
+        self.assertEqual(expense.amount, Decimal('1325.92'))
         self.assertEqual(expense.date, date(2017,1,1))
         self.assertEqual(expense.type, Expense.Type.PERSONAL_MONTHLY)
         self.assertEqual(expense.month_span, 1)

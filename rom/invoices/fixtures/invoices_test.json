@@ -1,0 +1,73 @@
+[
+{
+  "model": "invoices.client",
+  "pk": 1,
+  "fields": {
+    "name": "Roe Design"
+  }
+},
+{
+  "model": "invoices.invoice",
+  "pk": 1,
+  "fields": {
+    "invoice_number": "123",
+    "amount": "500.00",
+    "client": 1,
+    "date_sent": "2017-01-03",
+    "date_received": "2017-01-19",
+    "payment_comment": "check 9876"
+  }
+},
+{
+  "model": "invoices.invoice",
+  "pk": 2,
+  "fields": {
+    "invoice_number": "345",
+    "amount": "382.75",
+    "client": 1,
+    "date_sent": "2016-11-29",
+    "date_received": null,
+    "payment_comment": ""
+  }
+},
+{
+  "model": "invoices.expense",
+  "pk": 1,
+  "fields": {
+    "date": "2017-01-01",
+    "amount": "1325.92",
+    "type": 0,
+    "month_span": 1
+  }
+},
+{
+  "model": "invoices.expense",
+  "pk": 2,
+  "fields": {
+    "date": "2017-01-01",
+    "amount": "200.00",
+    "type": 1,
+    "month_span": 1
+  }
+},
+{
+  "model": "invoices.expense",
+  "pk": 3,
+  "fields": {
+    "date": "2017-01-15",
+    "amount": "3000.00",
+    "type": 2,
+    "month_span": 3
+  }
+},
+{
+  "model": "invoices.expense",
+  "pk": 4,
+  "fields": {
+    "date": "2017-01-15",
+    "amount": "800.00",
+    "type": 3,
+    "month_span": 12
+  }
+}
+]
