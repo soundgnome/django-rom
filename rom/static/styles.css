@@ -1,0 +1,17 @@
+body {
+  font-family: Verdana, sans-seif;
+}
+
+main {
+  max-width: 800px;
+  margin: 10px auto;
+}
+
+nav li {
+  display: inline;
+  margin-left: 8px;
+}
+
+th, td {
+  padding: 0 5px;
+}

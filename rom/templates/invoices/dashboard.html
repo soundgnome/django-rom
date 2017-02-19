@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load humanize %}
+
+{% block title %}Rom | Dashboard{% endblock %}
+
+{% block content %}
+<h1>Totals for {{ month }}</h1>
+<table>
+    <thead>
+        <tr>
+            <th>Adjusted Expenses</th>
+            <th>Total Income</th>
+            <th>Total Invoiced</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>${{ totals.adjusted_expenses|intcomma }}</td>
+            <td>${{ totals.income|intcomma }}</td>
+            <td>${{ totals.invoiced|intcomma }}</td>
+        </tr>
+    </tbody>
+</table>
+{% endblock %}
