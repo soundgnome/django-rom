@@ -41,7 +41,7 @@ def get_outstanding_invoices(since=None):
 
 
 def _get_adjusted_total(expenses, start, end):
-    total = 0
+    total = Decimal('0')
 
     aggregate = expenses.filter(date__gte=start).filter(date__lt=end). \
                 filter(month_span=1).aggregate(Sum('amount'))
@@ -77,14 +77,14 @@ def _get_income_total(start, end):
     aggregate = Invoice.objects. \
                 filter(date_received__gte=start).filter(date_received__lt=end). \
                 aggregate(Sum('amount'))
-    return aggregate['amount__sum']
+    return aggregate['amount__sum'] or 0
 
 
 def _get_invoiced_total(start, end):
     aggregate = Invoice.objects. \
                 filter(date_sent__gte=start).filter(date_sent__lt=end). \
                 aggregate(Sum('amount'))
-    return aggregate['amount__sum']
+    return aggregate['amount__sum'] or 0
 
 
 def _get_raw_total(expenses, start, end):

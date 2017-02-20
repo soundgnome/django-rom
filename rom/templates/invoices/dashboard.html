@@ -4,24 +4,30 @@
 {% block title %}Rom | Dashboard{% endblock %}
 
 {% block content %}
-<h1>Totals for {{ month }}</h1>
-<table>
-    <thead>
-        <tr>
-            <th>Adjusted Expenses</th>
-            <th>Total Income</th>
-            <th>Total Invoiced</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>${{ totals.adjusted_expenses|intcomma }}</td>
-            <td>${{ totals.income|intcomma }}</td>
-            <td>${{ totals.invoiced|intcomma }}</td>
-        </tr>
-    </tbody>
-</table>
-<div class="outstanding">
+<div class="monthly block">
+    <h2>Monthly Totals</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Month</th>
+                <th>Adjusted Expenses</th>
+                <th>Total Income</th>
+                <th>Total Invoiced</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for totals in monthly_totals %}
+            <tr>
+                <td>{{ totals.month }}</td>
+                <td>${{ totals.adjusted_expenses|intcomma }}</td>
+                <td>${{ totals.income|intcomma }}</td>
+                <td>${{ totals.invoiced|intcomma }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<div class="outstanding block">
     <h2>Outstanding Invoices</h2>
     <dl>
         <dt>Total amount:</dt>

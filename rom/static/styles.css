@@ -2,9 +2,10 @@ body {
   font-family: Verdana, sans-seif;
 }
 
-main {
+.block {
   max-width: 800px;
-  margin: 10px auto;
+  float: left;
+  margin: 30px;
 }
 
 nav li {

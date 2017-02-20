@@ -4,15 +4,24 @@ from .calculator import get_outstanding_invoices, get_monthly_totals
 
 
 def dashboard(request):
-    today = date.today()
-    if today.month == 1:
-        start = date(today.year-1, 12, 1)
-    else:
-        start = date(today.year, today.month-1, 1)
+    totals = []
+
+    start = date.today()
+    earliest = date(start.year-1, start.month, 1)
+
+    while (start > earliest):
+        if start.month == 1:
+            start = date(start.year-1, 12, 1)
+        else:
+            start = date(start.year, start.month-1, 1)
+
+        month = get_monthly_totals(start.year, start.month)
+        if month['income']:
+            month['month'] = start.strftime('%B %Y')
+            totals.append(month)
 
     context = {
-        'month': start.strftime('%B %Y'),
-        'totals': get_monthly_totals(start.year, start.month),
+        'monthly_totals': totals,
         'outstanding': get_outstanding_invoices()
     }
 
