@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date, timedelta
 from decimal import Decimal
 from django.db.models import Q, Sum
 from .models import Expense, Invoice
@@ -20,6 +20,21 @@ def get_monthly_totals(year, month):
     totals['adjusted_expenses'] = _get_adjusted_total(Expense.objects, start, end)
 
     return totals
+
+
+def get_outstanding_invoices(since=None):
+    invoices = {}
+    all_outstanding = Invoice.objects.filter(date_received=None)
+
+    aggregate = all_outstanding.aggregate(Sum('amount'))
+    invoices['total_balance'] = aggregate['amount__sum']
+
+    if since is None:
+        since = date.today()
+    start = since - timedelta(days=30)
+    invoices['past_30_days'] = all_outstanding.filter(date_sent__lte=start)
+
+    return invoices
 
 
 def _get_adjusted_total(expenses, start, end):
