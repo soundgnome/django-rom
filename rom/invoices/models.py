@@ -22,6 +22,9 @@ class Invoice(models.Model):
     date_received = models.DateField(blank=True, null=True)
     payment_comment = models.CharField(max_length=255, blank=True, default='')
 
+    def summary(self):
+        return '%s ($%s %s)' % (self.invoice_number, self.amount, self.client.name)
+
     def __str__(self):
         return 'Invoice %s' % self.invoice_number
 

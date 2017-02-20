@@ -21,4 +21,23 @@
         </tr>
     </tbody>
 </table>
+<div class="outstanding">
+    <h2>Outstanding Invoices</h2>
+    <dl>
+        <dt>Total amount:</dt>
+        <dd>${{ outstanding.total_balance|intcomma }}</dd>
+        <dt>Overdue amount:</dt>
+        <dd>${{ outstanding.overdue_balance|intcomma }}</dd>
+        {% if outstanding.overdue %}
+        <dt>Overdue invoices:</dt>
+        <dd>
+            <ul>
+                {% for invoice in outstanding.overdue %}
+                <li>{{ invoice.summary }}</li>
+                {% endfor %}
+            </ul>
+        </dd>
+        {% endif %}
+    </dl>
+</div>
 {% endblock %}

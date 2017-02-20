@@ -14,9 +14,10 @@ class CalculatorTestCase(TestCase):
     def test_outstanding_invoices(self):
 
         invoices = get_outstanding_invoices(date(2017,2,1))
-        self.assertEqual(invoices['total_balance'], 565.25)
-        self.assertEqual(invoices['past_30_days'].count(), 1)
-        self.assertEqual(invoices['past_30_days'].first().invoice_number, '345')
+        self.assertEqual(invoices['total_balance'], Decimal('565.25'))
+        self.assertEqual(invoices['overdue_balance'], Decimal('382.75'))
+        self.assertEqual(invoices['overdue'].count(), 1)
+        self.assertEqual(invoices['overdue'].first().invoice_number, '345')
 
 
     def test_monthly_totals(self):

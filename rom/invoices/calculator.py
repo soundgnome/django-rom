@@ -27,12 +27,15 @@ def get_outstanding_invoices(since=None):
     all_outstanding = Invoice.objects.filter(date_received=None)
 
     aggregate = all_outstanding.aggregate(Sum('amount'))
-    invoices['total_balance'] = aggregate['amount__sum']
+    invoices['total_balance'] = aggregate['amount__sum'] or 0
 
     if since is None:
         since = date.today()
     start = since - timedelta(days=30)
-    invoices['past_30_days'] = all_outstanding.filter(date_sent__lte=start)
+    invoices['overdue'] = all_outstanding.filter(date_sent__lte=start)
+
+    aggregate = invoices['overdue'].aggregate(Sum('amount'))
+    invoices['overdue_balance'] = aggregate['amount__sum'] or 0
 
     return invoices
 
