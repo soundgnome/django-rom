@@ -9,7 +9,8 @@
     <body>
         <nav>
             <ul>
-                <li><a href="/admin/">admin</a></li>
+                <li><a href="{% url 'admin:index' %}">admin</a></li>
+                <li><a href="{% url 'admin:invoices_invoice_changelist' %}">invoices</a></li>
                 <li><a href="{% url 'dashboard' %}">dashboard</a></li>
             </ul>
         </nav>

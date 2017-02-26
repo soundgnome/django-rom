@@ -10,15 +10,16 @@ def dashboard(request):
     earliest = date(start.year-1, start.month, 1)
 
     while (start > earliest):
-        if start.month == 1:
-            start = date(start.year-1, 12, 1)
-        else:
-            start = date(start.year, start.month-1, 1)
 
         month = get_monthly_totals(start.year, start.month)
         if month['income']:
             month['month'] = start.strftime('%B %Y')
             totals.append(month)
+
+        if start.month == 1:
+            start = date(start.year-1, 12, 1)
+        else:
+            start = date(start.year, start.month-1, 1)
 
     context = {
         'monthly_totals': totals,
