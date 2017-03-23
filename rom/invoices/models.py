@@ -67,7 +67,7 @@ class Expense(models.Model):
 
 
     def __str__(self):
-        return '%.2f %s expense' % (self.amount, self.type.label)
+        return '%s %s expense - %.2f' % (self.date.strftime('%B %Y'), self.type.label, self.amount)
 
     class Meta:
         ordering = ('date','type')
