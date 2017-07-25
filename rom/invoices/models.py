@@ -29,7 +29,7 @@ class Invoice(models.Model):
         return 'Invoice %s' % self.invoice_number
 
     class Meta:
-        ordering = ('date_sent','invoice_number')
+        ordering = ('-date_sent','invoice_number')
 
 
 class Expense(models.Model):
@@ -70,4 +70,4 @@ class Expense(models.Model):
         return '%s %s expense - %.2f' % (self.date.strftime('%B %Y'), self.type.label, self.amount)
 
     class Meta:
-        ordering = ('date','type')
+        ordering = ('-date','type')
