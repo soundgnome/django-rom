@@ -12,7 +12,7 @@ def dashboard(request):
     while (start > earliest):
 
         month = get_monthly_totals(start.year, start.month)
-        if month['income']:
+        if month['income'] or month['invoiced']:
             month['month'] = start.strftime('%B %Y')
             totals.append(month)
 
