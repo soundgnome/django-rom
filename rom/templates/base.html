@@ -12,10 +12,12 @@
                 <li><a href="{% url 'admin:index' %}">admin</a></li>
                 <li><a href="{% url 'admin:invoices_invoice_changelist' %}">invoices</a></li>
                 <li><a href="{% url 'dashboard' %}">dashboard</a></li>
+                <li><a href="{% url 'graphs' %}">graphs</a></li>
             </ul>
         </nav>
         <main>
             {% block content %}{% endblock %}
         </main>
+        {% block foot_js %}{% endblock %}
     </body>
 </html>

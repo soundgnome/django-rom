@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block title %}Rom | Graphs{% endblock %}
+
+{% block content %}
+<form method="get">
+    <label for="input-start">Start Date</label>
+    <input type="date" name="start" id="input-start" value="{{ inputs.start }}" />
+    <label for="input-end">End Date</label>
+    <input type="date" name="end" id="input-end" value="{{ inputs.end }}" />
+    <button>Update</button>
+</form>
+<hr />
+<svg id="balance-chart"></svg>
+{% endblock %}
+
+{% block foot_js %}
+<script src="https://d3js.org/d3.v5.min.js"></script>
+<script>
+ var balances = {{ balances }};
+
+ var margin = {top: 50, right: 50, bottom: 50, left: 50};
+ var width = window.innerWidth - margin.left - margin.right;
+ var height = 600 - margin.top - margin.bottom;
+
+ var xScale = d3.scaleTime()
+                .domain(d3.extent(balances, function(d) { return d.x; }))
+                .range([0, width]);
+ var yScale = d3.scaleLinear()
+                .domain(d3.extent(balances, function(d) { return d.y; }))
+                .range([height,0]);
+
+ var line = d3.line()
+              .x(function(d) { console.log('x ', xScale(d.x)); return xScale(d.x); })
+              .y(function(d) { console.log('y ', yScale(d.y)); return yScale(d.y); });
+
+ var svg = d3.select('#balance-chart')
+             .attr('width', width + margin.left + margin.right)
+             .attr('height', height + margin.top + margin.bottom)
+             .append('g').attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+
+ svg.append('g').attr('class', 'x axis').attr('transform', 'translate(0,' + height + ')')
+    .call(d3.axisBottom(xScale));
+
+ svg.append('g').attr('class', 'y axis')
+    .call(d3.axisLeft(yScale));
+
+ svg.append('path').datum(balances)
+    .attr('stroke', '#008800')
+    .attr('fill', 'none')
+    .attr('stroke-width', 1.5)
+    .attr('d', line);
+</script>
+{% endblock %}
