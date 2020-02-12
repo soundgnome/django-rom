@@ -1,4 +1,4 @@
-Django==1.11.23
+Django==1.11.28
 django-enumfields==1.0.0
 enum34==1.1.6
 psycopg2==2.8.3
