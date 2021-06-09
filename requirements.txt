@@ -1,4 +1,4 @@
-Django==2.2.20
+Django==2.2.22
 django-enumfields==1.0.0
 enum34==1.1.10
 psycopg2==2.8.6
