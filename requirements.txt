@@ -3,4 +3,4 @@ django-enumfields==2.1.1
 enum34==1.1.10
 psycopg2==2.8.6
 pytz==2021.1
-sqlparse==0.4.2
+sqlparse==0.4.4
